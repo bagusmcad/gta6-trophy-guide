@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leonida Ledger — GTA 6 Trophy Guide &amp; Tracker</title>
+<meta name="description" content="The best offline GTA 6 trophy guide and tracker: all 55 official trophies with cited guides, a roadmap to the platinum, a planner, and missables flagged.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff5c7a'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='30' font-weight='bold' fill='white' text-anchor='middle'%3ELL%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">LL</div>
+    <div>
+      <h1>Leonida Ledger</h1>
+      <p class="tagline">GTA 6 trophy guide &amp; tracker — all 55, offline, in your own words with sources</p>
+    </div>
+  </div>
+  <div class="dash" id="dash" aria-label="Progress summary"></div>
+  <div class="top-actions">
+    <label class="spoiler-toggle" title="Hide the names and descriptions of hidden story trophies until you earn them">
+      <input type="checkbox" id="spoilerToggle"> <span>Spoiler-free</span>
+    </label>
+    <button id="exportBtn" type="button">Export progress</button>
+    <label class="import-btn">Import progress <input id="importFile" type="file" accept="application/json,.json"></label>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <button type="button" data-view="tracker" class="tab active" aria-current="page">Tracker</button>
+  <button type="button" data-view="roadmap" class="tab">Roadmap</button>
+  <button type="button" data-view="planner" class="tab">Platinum Planner</button>
+  <button type="button" data-view="missables" class="tab">Missables <span class="pill" id="missablePill">1</span></button>
+  <button type="button" data-view="sources" class="tab">Sources</button>
+</nav>
+
+<main id="view" aria-live="polite"></main>
+
+<footer class="foot">
+  <p><strong>Leonida Ledger</strong> — an unofficial, fan-made guide. Grand Theft Auto, GTA and Leonida are trademarks of Rockstar Games; this guide uses no Rockstar logo or artwork. Trophy names and descriptions are as PlayStation publishes them; every guide is written in our own words and cites its sources. Works fully offline: it loads no network resource at run time.</p>
+  <p id="footStats"></p>
+</footer>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
