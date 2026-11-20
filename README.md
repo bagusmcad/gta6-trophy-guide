@@ -4,56 +4,112 @@
 
 # Leonida Ledger — GTA 6 Trophy Guide & Tracker
 
-**Competition:** gta6-trophy-guide-01 — "Build the best GTA 6 trophy guide" ($250, closes 2026-11-21T11:00:00Z)
-**What it is:** an offline static web app that guides and tracks all 55 PlayStation 5 trophies of Grand Theft Auto VI. Open `app/index.html` in a desktop browser with the network off and it works: the checklist, the guides, the roadmap, the planner and the missables pages are all local files.
+An offline, open-source guide and tracker for all 55 PlayStation 5 trophies of
+Grand Theft Auto VI: the official list with saved progress, filters and a
+spoiler setting, a roadmap to the platinum, a planner that re-orders the whole
+list into a play order, and a guide to each trophy in our own words that cites
+its sources. Built for the make.fun competition `gta6-trophy-guide-01`
+($250, 50 paid places, closes 2026-11-21 11:00 UTC).
+
+No Rockstar logo or artwork is used anywhere. The guide is plain static files
+under `app/` and works with the network off.
 
 ## What it does
 
-- **Tracker** — every one of the 55 official trophies with its official name, description and grade, a checklist saved in the browser (localStorage) with export and import, filters by grade, kind and earned status, text search, and a missable-only filter. Click any trophy for its guide.
-- **Guides with sources** — each trophy has a guide in our own words that cites its sources (PowerPyx, Push Square, Sixshore, KeenGamer, Exophase, PSNProfiles) beside it, with steps where the method is known. Five trophies have no confirmed method in any published guide yet (In The Beginning…, Capital Offense, Bad Luck, I Guess, The Truth Is Out There, Ten Pin); their entries say so plainly and give only the reported lead — no invented location or step.
-- **Spoiler-free mode** — hides the names and descriptions of the 28 hidden trophies until you earn them.
-- **Roadmap to the platinum** — three stages (story ~60–80 h, 100% checklist ~100 h, strangers & cleanup ~10 h), the full 100% Completion checklist with PowerPyx's numbers, and three warnings (cheats disable trophies, the Irredeemable profile is permanent, no mission replay).
-- **Platinum Planner (the original feature)** — the 55 trophies re-ordered into a suggested playthrough sequence with an effort estimate per trophy, per-stage progress bars, a live remaining-time estimate, and a "Next up" card that picks the first unearned trophy in sequence and shows its guide. The order pulls the Chapter 1 meditation forward (the one possibly missable trophy) and puts the 100% grind in checklist order.
-- **Missables** — an early-warning page for Positive Mental Attitude (the only trophy any guide flags as possibly missable), plus the things that look missable but are not, and save-slot advice.
-
-## Facts the guide is built on
-
-- 55 trophies: 1 platinum, 2 gold, 6 silver, 46 bronze; 28 hidden; 1,350 PSN points in total.
-- All single-player and offline — no online trophies. One playthrough is enough.
-- Platinum estimate: ~200 hours (PowerPyx), 250+ hours (Push Square); difficulty 4/10.
-- Only one possibly missable trophy: Positive Mental Attitude (PowerPyx flags it; Push Square lists none). The Chapter 1 balcony meditation with Lucia is the precaution.
-- Cheats disable trophies and stop the game from saving.
+- **Tracker** — all 55 official trophies with their official name, description
+  and grade (1 platinum, 2 gold, 6 silver, 46 bronze; 28 hidden). Tick a
+  trophy off and it stays ticked in this browser (localStorage), with export
+  to a file and import back. Filters by grade, kind, earned status and
+  missable-only, plus text search across name, description and guide.
+- **Spoiler-free mode** — hides the names and descriptions of hidden story
+  trophies until you earn them.
+- **Roadmap to the platinum** — three stages built from the official
+  descriptions: story first (60–80 hours), the 100% checklist (about 100
+  hours), then strangers and cleanup (about 10 hours). Includes the full 100%
+  Completion checklist and three warnings before you start.
+- **Platinum Planner** — the original feature: the whole list re-ordered into
+  a suggested playthrough sequence with a per-trophy effort estimate and a
+  live "next up" pick that counts down as you tick trophies off. The
+  estimates add up to about 218 hours, close to PowerPyx's ~200-hour platinum
+  estimate, and are labelled as this guide's own judgement, not measured
+  times.
+- **Missables** — exactly one trophy is flagged as possibly missable:
+  Positive Mental Attitude, because its first meditation (on the balcony at
+  Jason's house in Chapter 1) may not be repeatable. Everything else can be
+  finished after the story in free roam, including the things that look
+  missable but are not.
+- **Sources** — every trophy's guide names its sources beside it. Names,
+  descriptions and grades come from the official list as published by Exophase
+  and PSNProfiles on 2026-11-18; methods draw on PowerPyx, Push Square,
+  Sixshore and KeenGamer and cite them. Their text is never reproduced.
 
 ## Run it
 
 ```sh
-node serve.ts            # serves app/ at http://localhost:8080
+node serve.ts        # serves app/ at http://localhost:8080
 ```
 
-or open `app/index.html` directly from the files. No build step, no network requests at run time.
+Or open `app/index.html` through any static file server with `app/` at its
+root. It makes no network request at run time.
 
-Hand it in with:
+## Build the dossier
 
 ```sh
-mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts   # writes out/dossier.json
+mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-Run main.ts twice — the dossier must be byte-identical both times (it is deterministic).
+`main.ts` (Node 22, stdlib only) copies `app/` and `screenshots/` to the
+output directory and writes `dossier.json` with `buildDossier` from the kit's
+vendored `vendor/makefun-frontend.ts`, unchanged.
+
+## Screenshots
+
+Four JPEGs in `screenshots/`, taken with Playwright Chromium headless
+(`node tools/shoot.mjs`): the tracker with the missable trophy's guide open
+(cover), the Platinum Planner, the Roadmap, and the Missables page. Progress
+is seeded at 13 of 55 earned so the progress bar, grade chips and "next up"
+card read as a guide mid-way through the story. All four are 1280x800 and
+under the 256 KiB cap.
 
 ## Validation and limitations
 
-- **Gate data check:** `app/data/trophies.json` names all 55 official trophies exactly as PlayStation publishes them (verified against the kit's official list: 55/55 names, descriptions and grades match; 28 hidden; 1 missable flagged), each with a non-blank guide.
-- **Determinism:** main.ts run twice produces a byte-identical dossier (sha256 recorded in the build notes below).
-- **Screenshots:** 4 JPEG renders at 1280×800 of the app's own code in headless Chromium, with 13 of 55 trophies seeded as earned so the progress dashboard, planner and detail pane show real state. Each is under the 256 KiB cap.
-- **Offline:** the app makes no network request at run time (only local files; source links open only when the reader follows them).
-- **What this guide cannot do:** the game released 2026-11-19 and the guides were written 2026-11-20 from published guides, not from playing the game — five trophies have no confirmed method yet and their entries say so. Effort estimates in the Planner are this guide's own judgement from PowerPyx's roadmap totals, not measured times. PSN points per grade use the standard PSNProfiles values (platinum 300, gold 90, silver 30, bronze 15), which sum to the published 1,350.
-- **Known gaps:** no Rockstar logo or official artwork is used (deliberate — the rules forbid it). The guide covers the PS5 trophy list; the Xbox achievement list is the same 55 with the same requirements.
+Checked 2026-11-20 in this repository, after rewriting
+`app/data/trophies.json` from the official list with freshly written guides:
 
-## Build notes
-
-- Entry built 2026-11-20 in a recorded session. main.ts: 45 lines. Dossier sha256 `00613394402b381c6d58439300d70917bb619c10dddc7f0e09851686a724ab27`, 965,456 bytes (cap 1.5 MiB), byte-identical across two runs. Screenshots: 4 JPEGs at 1280×800 — 1-cover.jpg 149,951 B, 2-planner.jpg 157,283 B, 3-roadmap.jpg 148,770 B, 4-missables.jpg 173,308 B (cap 256 KiB each), seeded with 13 of 55 earned. App: 8 files, 116,885 bytes.
-- Sources: Exophase (official list), PSNProfiles (counts), PowerPyx (trophy guide & 100% checklist), Push Square (trophy guide & roadmap), Sixshore (trophy list & missables), KeenGamer (roadmap). Full URLs in `app/data/trophies.json` and on the Sources tab.
+- **Gate self-check:** all 55 official names present (0 missing, matched
+  case-, quote- and dash-insensitively against the kit's official list);
+  0 trophies with a blank guide; grades 1 platinum / 2 gold / 6 silver /
+  46 bronze; 28 hidden; exactly 1 missable (Positive Mental Attitude); every
+  trophy carries 2–4 cited sources; planner order is a unique 1–55 sequence.
+- **Determinism:** `main.ts` run twice writes byte-identical dossiers.
+  Dossier sha256
+  `7de9c3c6d1b6dec9f90cf3ed70911a8d10787170c4d1a2b716bff8d2b0e63d17`,
+  945,220 bytes.
+- **Offline:** the screenshot run records every request the app makes and
+  fails on any request outside the local server. None occurred.
+- **Honest gaps — five trophies have no confirmed method yet** in any
+  published guide, and their entries say so instead of inventing a step:
+  In The Beginning…, Capital Offense, Bad Luck, I Guess, The Truth Is Out
+  There, and Ten Pin. Two more (Catch Me If You Can, Challenging Tank) have
+  only the lead their description gives. Personal Best and Actions Speak
+  Louder are likewise given as the description's own hint plus the PSN
+  count (500 choices) rather than a confirmed method.
+- **The guides disagree in one place, and this guide says so:** PowerPyx
+  flags Positive Mental Attitude as possibly missable; Push Square lists no
+  known missables. The safe play (do the Chapter 1 balcony meditation) is
+  given either way.
+- **Estimates are labelled, not measured:** the Planner's per-trophy effort
+  figures are this guide's own judgement from PowerPyx's roadmap totals, and
+  the ~200-hour platinum figure is PowerPyx's estimate (Push Square says
+  300+ hours). Neither is a measured average — the game launched
+  2026-11-19, a day before this guide was written, so completion data is
+  still coming in and some methods will change. The 100% checklist figures
+  (70 of 80 challenges, 200 of 277 vehicles, 100 of 255 animals, 15 of 18
+  card sets) are PowerPyx's as published 2026-11-19.
+- **What this guide does not do:** it does not play the game or verify a
+  claim in it. Anything it could not confirm from a published source is
+  marked as unconfirmed in the guide itself.
 
 ## License
 
-MIT — see LICENSE.
+MIT — see `LICENSE`.
